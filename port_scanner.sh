@@ -19,7 +19,7 @@ function helpPanel(){
 	echo -e "\t\t $0 [scan type] {IP_TO_SCAN}"
 }
 
-
+tput civis
 if [[ $# == "1" || $# == "2" ]]; then
 	scan_type=$1; ip=$2
 	code="none"
@@ -32,21 +32,21 @@ if [[ $# == "1" || $# == "2" ]]; then
 	timeout 1 bash -c "ping -c 1 $2" &>/dev/null
 	status=$?
 
-	if [[ "$status" -gt 0 && $code == "none" ]]; then echo "[*] Host unreachable"; exit 1; fi
+	if [[ "$status" -gt 0 && $code == "none" ]]; then echo "[*] Host unreachable"; tput cnorm; exit 1; fi
 	
 	if [ $scan_type == "--fast-scan" ]; then
 		echo -e "[*] Scanning top $(cat top_ports.txt | wc -l) ports\n"
         	for port in $(cat top_ports.txt); do
                 	timeout 1 bash -c "echo > /dev/tcp/$ip/$port" 2>/dev/null && echo "[!] PORT $port - OPEN" &
         	done; wait
-		exit 0
+		tput cnorm; exit 0
 	fi
 	if [ $scan_type == "--full-scan" ]; then
         	echo -e "[*] Scanning full range of ports (1-65535)\n"
 	        for port in $(seq 1 65535); do
         	        timeout 1 bash -c "echo > /dev/tcp/$ip/$port" 2>/dev/null && echo "[!] PORT $port - OPEN" &
 	        done; wait
-		exit 0
+		tput cnorm; exit 0
 	fi
 else
 	helpPanel
