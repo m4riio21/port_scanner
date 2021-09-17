@@ -36,7 +36,7 @@ scan_type="none"
 ip="none"
 ports=""
 
-for arg in "$@"; do 	#Iterate args to search IP and scan type
+for arg in "$@"; do 	#Iterate args to search IP and scan type.
 
 	if [[ $arg == "--fast-scan" || $arg == "--full-scan" && $scan_type == "none" ]]; then
 		scan_type=$arg
